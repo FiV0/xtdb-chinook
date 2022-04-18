@@ -1,16 +1,10 @@
-# {project}
+# xtdb-chinook
 
-Executing the program can either be done via
-```
-clj -M -m scratch :arg1 :arg2
-```
-or by compiling a jar via
-```
-clj -T:build clean
-clj -T:build jar
-```
-and executing it via
-```
-java -jar target/lib-0.1.4.jar :arg1 :arg2
-```
+[XTDB](https://github.com/xtdb/xtdb) is a general-purpose bitemporal database for SQL, Datalog & graph queries.
+
+The [chinook](https://github.com/lerocha/chinook-database) data represents a digital media store including
+tracks, albums, artists, playlists and genres. So far, the repo only touches upon a subset of these.
+
+![xtdb-chinook](xtdb-chinook.png)
+
 ## License

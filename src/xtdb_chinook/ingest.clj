@@ -91,9 +91,9 @@
                         :db-dir (io/file dir)
                         :sync? true}})]
     (xt/start-node
-     {:xtdb/tx-log (kv-store "data/dev/tx-log")
-      :xtdb/document-store (kv-store "data/dev/doc-store")
-      :xtdb/index-store (kv-store "data/dev/index-store")})))
+     {:xtdb/tx-log (kv-store "data/tx-log")
+      :xtdb/document-store (kv-store "data/doc-store")
+      :xtdb/index-store (kv-store "data/index-store")})))
 
 (def xtdb-node (start-xtdb!))
 
