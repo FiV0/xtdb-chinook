@@ -25,7 +25,9 @@ backed db's. You would need to remap the `db/id` before ingesting into xt.
 
 The [second](src/xtdb_chinook/ingest.clj) namespace ingests the extracted data into a fresh xt node.
 ```bash
-clj -X xtdb-chinook.ingest/ingest
+$ clj -X xtdb-chinook.ingest/ingest
 ```
 
 ## License
+
+The same as the chinook repo.
