@@ -30,4 +30,4 @@ $ clj -X xtdb-chinook.ingest/ingest
 
 ## License
 
-The same as the chinook repo.
+The same as the chinook repository.
