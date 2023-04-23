@@ -11,5 +11,6 @@ resources/chinook.db
 .store
 out
 .#*
-.clj-kondo/.cache
+.clj-kondo/
+.lsp
 data
