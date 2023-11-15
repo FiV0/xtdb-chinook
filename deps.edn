@@ -4,8 +4,8 @@
  {org.clojure/clojure                 {:mvn/version "1.11.0"}
   com.github.seancorfield/next.jdbc   {:mvn/version "1.2.772"}
   org.xerial/sqlite-jdbc              {:mvn/version "3.36.0.3"}
-  com.xtdb/xtdb-core                  {:mvn/version "1.21.0"}
-  com.xtdb/xtdb-rocksdb               {:mvn/version "1.21.0"}
+  com.xtdb/xtdb-core                  {:mvn/version "1.23.1"}
+  com.xtdb/xtdb-rocksdb               {:mvn/version "1.23.1"}
   camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.2"}}
 
  :aliases
