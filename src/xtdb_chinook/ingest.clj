@@ -1,38 +1,43 @@
 (ns xtdb-chinook.ingest
   "Ingests that data from the sqlite db into an xt instance."
   (:require [clojure.java.io :as io]
+            [clojure.edn :as edn]
             [clojure.set]
             [xtdb-chinook.export :as export]
+            [xtdb.client :as client]
             [xtdb.api :as xt]))
 
-;; xt
-(defn start-xtdb! []
-  (letfn [(kv-store [dir]
-            {:kv-store {:xtdb/module 'xtdb.rocksdb/->kv-store
-                        :db-dir (io/file dir)
-                        :sync? true}})]
-    (xt/start-node
-     {:xtdb/tx-log (kv-store "data/tx-log")
-      :xtdb/document-store (kv-store "data/doc-store")
-      :xtdb/index-store (kv-store "data/index-store")})))
 
-(def xtdb-node (start-xtdb!))
+(def xtdb-node (client/start-client "http://localhost:3000"))
 
 (defn stop-xtdb! [] (.close xtdb-node))
 
-(defn ingest [_]
-  (xt/submit-tx xtdb-node
-                (->> (export/chinook-entities export/con)
-                     (map #(clojure.set/rename-keys % {:db/id :xt/id}))
-                     (map #(vector ::xt/put %))
-                     doall))
-  (xt/sync xtdb-node)
-  (stop-xtdb!))
+(defn normalize-entity [e]
+  (-> (dissoc e :xt/id)
+      (update-keys #(keyword (name %)))
+      (assoc :xt/id (:xt/id e))))
+
+(defn read-entities []
+  (->> (edn/read-string (slurp "entities.edn"))
+       (map normalize-entity)))
+
+(defn entity->table [entity]
+  (-> entity :xt/id namespace keyword))
 
 (comment
-  (ingest nil)
+  (entity->table (first entities)))
 
-  (->> (read-string (slurp "entities.edn"))
-       (map #(clojure.set/rename-keys % {:db/id :xt/id})))
+(defn ingest [entities]
+  (->> (map #(vector :put (entity->table %) %) entities)
+       (partition-all 1024)
+       (mapv #(xt/submit-tx xtdb-node (vec %)))))
+
+(comment
+  (def entities (read-entities))
+  (first entities)
+
+  (ingest entities)
+
+  (xt/q xtdb-node '(from :track [name composer]))
 
   )

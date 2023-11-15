@@ -1,7 +1,10 @@
 (ns user
   (:require [clojure.java.io :as io]
             [clojure.tools.namespace.repl :as repl]
-            [lambdaisland.classpath.watch-deps :as watch-deps]))
+            [lambdaisland.classpath.watch-deps :as watch-deps]
+            [xtdb.api :as xt]
+            [xtdb.client :as xt.client]
+            ))
 
 (defn watch-deps!
   []
@@ -11,10 +14,12 @@
   (watch-deps!))
 
 (comment
-  (repl/set-refresh-dirs (io/file "src") (io/file "dev"))
-  (repl/refresh)
-  (repl/clear)
 
-  (watch-deps!)
+  (def my-node (xt.client/start-client "http://localhost:3000"))
+
+  (xt/status my-node)
+
+
+
 
   )

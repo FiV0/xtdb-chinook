@@ -4,9 +4,13 @@
  {org.clojure/clojure                 {:mvn/version "1.11.0"}
   com.github.seancorfield/next.jdbc   {:mvn/version "1.2.772"}
   org.xerial/sqlite-jdbc              {:mvn/version "3.36.0.3"}
-  com.xtdb/xtdb-core                  {:mvn/version "1.23.1"}
-  com.xtdb/xtdb-rocksdb               {:mvn/version "1.23.1"}
-  camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.2"}}
+  ;; com.xtdb/xtdb-core                  {:mvn/version "1.23.1"}
+  ;; com.xtdb/xtdb-rocksdb               {:mvn/version "1.23.1"}
+  camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.2"}
+
+  ;; 2.x
+  com.xtdb.labs/xtdb-api {:mvn/version "2.0.0-SNAPSHOT"}
+  com.xtdb.labs/xtdb-http-client-clj {:mvn/version "2.0.0-SNAPSHOT"}}
 
  :aliases
  {:dev
@@ -23,4 +27,5 @@
 
  :mvn/repos
  {"central"        {:url "https://repo1.maven.org/maven2/"}
-  "clojars"        {:url "https://clojars.org/repo"}}}
+  "clojars"        {:url "https://clojars.org/repo"}
+  "ossrh-snapshots" {:url "https://s01.oss.sonatype.org/content/repositories/snapshots"}}}
