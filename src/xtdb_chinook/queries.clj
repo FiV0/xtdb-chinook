@@ -1,22 +1,34 @@
 (ns xtdb-chinook.queries
   "A namespace to demonstrate the query capabilities of xtdb."
   (:require [xtdb-chinook.ingest :as ingest]
-            [xtdb.api :as xt]
-            [xtdb.query]))
+            [xtdb.api :as xt]))
 
-(defn db [] (xt/db ingest/xtdb-node))
+(def node ingest/xtdb-node)
 
 ;; The following query find's the name of the artist who played the
 ;; track "For Those About To Rock (We Salute You)" via
 ;; ?track -> ?album -> ?artist
 
-(xt/q (db)
-      '{:find [?name]
-        :where
-        [[?t :track/name "For Those About To Rock (We Salute You)"]
-         [?t :track/album ?album]
-         [?album :album/artist ?artist]
-         [?artist :artist/name ?name]]})
+(xt/q node
+      '(-> (unify (from :track [album {:name "For Those About To Rock (We Salute You)"}])
+                  (from :album [{:xt/id album} artist])
+                  (from :artist [{:xt/id artist :name artist-name}]))
+           (return :artist-name)))
+
+;; TODO
+(xt/q node
+      '(-> (unify (from :track [album {:name $name}])
+                  (from :album [{:xt/id album} artist])
+                  (from :artist [{:xt/id artist :name artist-name}]))
+           (return :artist-name))
+      {:args {:name "For Those About To Rock (We Salute You)"}})
+
+;; SQL
+(xt/q node
+      ["SELECT ar.name AS artist_name FROM track AS t, album AS a, artist AS ar
+        WHERE t.name = ? AND t.album = a.xt$id AND a.artist = ar.xt$id"
+       "For Those About To Rock (We Salute You)"])
+
 
 ;; One can use clojure.core functions inside the where clause
 
